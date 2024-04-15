@@ -34,9 +34,10 @@ class Microphone:
         for i in range(self.pyaudio_instance.get_device_count()):
             dev = self.pyaudio_instance.get_device_info_by_index(i)
             name = dev['name'].encode('utf-8')
+            print('... init name {}'.format(name))
             print(i, name, dev['maxInputChannels'], dev['maxOutputChannels'])
             if name.lower().find(b'respeaker') >= 0 and dev['maxInputChannels'] > 0:
-                print('Use {}'.format(name))
+                print('... init use {}'.format(name))
                 self.device_index = i
                 break
 
@@ -65,7 +66,6 @@ class Microphone:
         self.record_countdown = None
         self.listen_countdown = [0, 0]
 
-    @staticmethod
 
     def record(self, file_name, seconds=1800):
         self.wav = wave.open(file_name, 'wb')
@@ -97,9 +97,6 @@ class Microphone:
         self.stream.close()
 
     def _callback(self, in_data, frame_count, time_info, status):
-        if self.status & self.recording_mask:
-            pass
-
         if self.status & self.recording_mask:
             self.wav.writeframes(in_data)
             self.record_countdown -= 1
