@@ -1,4 +1,6 @@
 '''
+scp markus@zeroV:github/respeaker_python_library/markus.wav ~/tmp/respeaker.wav && cvlc ~/tmp/respeaker.wav
+
 sudo apt install python3-pyaudio python3-requests
 
 NICHT!!!!!!!!
