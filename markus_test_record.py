@@ -19,8 +19,6 @@ import queue as Queue
 
 import pyaudio
 
-from respeaker.pixel_ring import pixel_ring
-
 class Microphone:
     sample_rate = 16000
     frames_per_buffer = 512
@@ -29,7 +27,6 @@ class Microphone:
     recording_mask = (1 << 2)
 
     def __init__(self, pyaudio_instance=None, quit_event=None, decoder=None):
-        pixel_ring.set_color(rgb=0x400000)
 
         self.pyaudio_instance = pyaudio_instance if pyaudio_instance else pyaudio.PyAudio()
 
