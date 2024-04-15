@@ -1,8 +1,17 @@
+'''
+sudo apt install python3-pyaudio python3-requests
+
+NICHT!!!!!!!!
+  sudo apt install python3-pip
+  pip install pyaudio requests
+
+
+'''
+
 import os
 import wave
 import types
 import collections
-import random
 import string
 from threading import Thread, Event
 
@@ -11,7 +20,6 @@ import queue as Queue
 import pyaudio
 
 from respeaker.pixel_ring import pixel_ring
-from respeaker.vad import vad
 
 class Microphone:
     sample_rate = 16000
@@ -94,37 +102,6 @@ class Microphone:
     def _callback(self, in_data, frame_count, time_info, status):
         if self.status & self.recording_mask:
             pass
-
-        if self.status & self.detecting_mask:
-            self.detect_queue.put(in_data)
-
-        if self.status & self.listening_mask:
-            active = vad.is_speech(in_data)
-            if active:
-                if not self.active:
-                    for d in self.listen_history:
-                        self.listen_queue.put(d)
-                        self.listen_countdown[0] -= 1
-
-                    self.listen_history.clear()
-
-                self.listen_queue.put(in_data)
-                self.listen_countdown[0] -= 1
-            else:
-                if self.active:
-                    self.listen_queue.put(in_data)
-                else:
-                    self.listen_history.append(in_data)
-
-                self.listen_countdown[1] -= 1
-
-            if self.listen_countdown[0] <= 0 or self.listen_countdown[1] <= 0:
-                self.listen_queue.put('')
-                self.status &= ~self.listening_mask
-                pixel_ring.wait()
-                print('Stop listening')
-
-            self.active = active
 
         if self.status & self.recording_mask:
             self.wav.writeframes(in_data)
