@@ -113,7 +113,7 @@ def test_record():
     import time
 
     mic = Microphone()
-    mic.record('hello.wav', seconds=3)
+    mic.record('markus.wav', seconds=3)
     time.sleep(3)
     mic.quit()
 
