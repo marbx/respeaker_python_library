@@ -122,4 +122,4 @@ def test_record():
 
 
 if __name__ == '__main__':
-    main()
+    test_record()
